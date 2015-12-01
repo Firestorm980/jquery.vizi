@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizi with Sections - Check</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                font-size: 100%;
+            }
+            body {
+                margin: 0;
+                font-size: 1rem;
+                font-family: sans-serif;
+            }
+            .container {
+                margin: 0 auto;
+                max-width: 800px;
+                overflow: hidden;
+                padding: 1rem 0;
+            }
+            .section {
+                padding: 10em 0;
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -webkit-align-items: center;
+                    -ms-flex-align: center;
+                        align-items: center;
+                -webkit-box-pack: center;
+                -webkit-justify-content: center;
+                    -ms-flex-pack: center;
+                        justify-content: center;
+                border: 1px solid #ccc;
+                border-radius: 0.25em;
+                color: #ccc;
+                -webkit-transition-property: color, border-color;
+                        transition-property: color, border-color;
+                -webkit-transition-duration: 250ms;
+                        transition-duration: 250ms;
+            }
+            .section.is-visible {
+                border-color: #2ecc71;
+                color: #2ecc71;
+            }
+            .section.not-visible {
+                border-color: #e74c3c;
+                color: #e74c3c;
+            }
+            .section ~ .section {
+                margin-top: 1em;
+            }
+            .debug {
+                padding: 0.5rem;
+                position: fixed;
+                border-bottom: 1px solid #ccc;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                font-size: 0.875rem;
+                color: #666;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="debug">
+            <button type="button" class="btn" id="checkStatus">Check Visibility</button>
+        </div>
+
+        <div id="container" class="container">
+
+            <h1>Sections</h1>
+            <h2>Check Status</h2>
+
+            <p>Basic element visibility checking. When you run the check, elements that are in the container's viewable area will say "Visible", ones that weren't at the time of the check will be "Not Visible". Changing the 'partiallyVisible' option during initiation will make it so elements will only be visible if the whole element is in the viewable area at the time of the check.</p>
+
+            <section class="section"><span class="status">Unknown</span></section>
+            <section class="section"><span class="status">Unknown</span></section>
+            <section class="section"><span class="status">Unknown</span></section>
+            <section class="section"><span class="status">Unknown</span></section>
+            <section class="section"><span class="status">Unknown</span></section>
+            <section class="section"><span class="status">Unknown</span></section>
+            <section class="section"><span class="status">Unknown</span></section>
+            <section class="section"><span class="status">Unknown</span></section>
+            <section class="section"><span class="status">Unknown</span></section>
+            <section class="section"><span class="status">Unknown</span></section>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="../src/jquery.vizi.js"></script>
+        <script>
+            jQuery(document).ready(function($) {
+                // Start up vizi to track the elements
+                jQuery('.section').vizi();
+
+                // Check each element
+                jQuery('#checkStatus').on('click', function(){
+                    // Check each element
+                    jQuery('.section').each(function(){
+                        var $elem = jQuery(this);
+                        var $status = $elem.find('.status');
+                        var is_visible = $elem.vizi('visible');
+
+                        // Do the things!
+                        if ( is_visible ){ 
+                            $elem.addClass('is-visible').removeClass('not-visible');
+                            $status.text('Visible'); 
+                        }
+                        else { 
+                            $elem.removeClass('is-visible').addClass('not-visible');
+                            $status.text('Not Visible'); 
+                        }
+                    });
+                });
+            });
+        </script>
+
+    </body>
+</html>"

@@ -64,64 +64,64 @@
         </style>
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
 
         <!-- Add your site or application content here -->
 
+		<div class="container">
 
-        <div class="spacer">SPACE!</div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer target" id="test2"></div>
-		<div class="spacer"></div>
-        <ul class="list" id="overflowx">
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item target2" id="target1">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-        </ul>
-        <ul class="list" id="overflowy">
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item target2" id="target2">test</li>
-	        <li class="test-item">test</li>
-	        <li class="test-item">test</li>
-        </ul>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer target" id="test"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="spacer"></div>		
+	        <div class="spacer">SPACE!</div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer target" id="test2"></div>
+			<div class="spacer"></div>
+	        <ul class="list" id="overflowx">
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item target2" id="target1">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+	        </ul>
+	        <ul class="list" id="overflowy">
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item target2" id="target2">test</li>
+		        <li class="test-item">test</li>
+		        <li class="test-item">test</li>
+	        </ul>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer target" id="test"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>		
 		
+		</div>
+
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="../src/jquery.vizi.js"></script>
 		<script>
@@ -144,7 +144,7 @@
 						var id = $(this).attr('id');
 						console.log(id+': target leave');
 					}
-				});*/
+				});*//*
 				$('#target2').vizi({ 
 					container: '#overflowy',
 					onVisible: function( data ){
@@ -175,6 +175,12 @@
 					onLeave: function(){ 
 						var id = $(this).attr('id');
 						console.log(id+': target leave');
+					}
+				});*/
+
+				$('.container').vizi({
+					onVisible: function( data ){
+						console.log( data );
 					}
 				});
 			});

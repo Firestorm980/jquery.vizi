@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizi with Sections - Basic</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style>
+        	* {
+        		box-sizing: border-box;
+        	}
+        	html {
+        		font-size: 100%;
+        	}
+        	body {
+        		margin: 0;
+				font-size: 1rem;
+				font-family: sans-serif;
+        	}
+        	.container {
+        		margin: 0 auto;
+        		max-width: 800px;
+        		overflow: hidden;
+        		padding: 1rem 0;
+        	}
+        	.section {
+        		padding: 10em 0;
+        		display: flex;
+        		align-items: center;
+        		justify-content: center;
+        	}
+        	.percent {
+        		color: white;
+        		font-size: 2rem;
+        	}
+        </style>
+    </head>
+    <body>
+		<div id="container" class="container">
+
+            <h1>Sections</h1>
+            <h2>Basic</h2>
+
+            <p>You can tie the percent visible and other data properties to do certain effects. Some examples might be:</p>
+
+            <ul>
+                <li>Run/scrub through a timeline animation (like those in GSAP) and have it run backwards automatically</li>
+                <li>Prompt an event/animation to happen when the percent gets to a certain amount</li>
+            </ul>
+
+			<section class="section" style="background-color: #1abc9c;"><span class="percent"></span></section>
+			<section class="section" style="background-color: #3498db;"><span class="percent"></span></section>
+			<section class="section" style="background-color: #9b59b6;"><span class="percent"></span></section>
+			<section class="section" style="background-color: #34495e;"><span class="percent"></span></section>
+			<section class="section" style="background-color: #2ecc71;"><span class="percent"></span></section>
+		</div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="../src/jquery.vizi.js"></script>
+		<script>
+			jQuery(document).ready(function($) {
+				$('.section').vizi({
+					onVisible: function( data ){
+						var $elem = jQuery(this);
+						var $percent = $elem.find('.percent');
+
+						$percent.text( (data.percent.y*100).toFixed(2) + '%');
+						$elem.css({ opacity: data.percent.y }); 
+					}
+				});
+			});
+		</script>
+
+    </body>
+</html>

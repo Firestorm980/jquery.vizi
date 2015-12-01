@@ -24,6 +24,10 @@
             // Positive numbers expand the element outward, negative numbers act as an inset
             // Can be a number or an object ({ top: 0, left: 0, right: 0, bottom: 0 })
             offset: 0,
+            // An all or nothing approach.
+            // Element will be visible if any of it is in the container's viewable area.
+            // Otherwise, it is considered to not be visible.
+            partiallyVisible: true,
 
             // Callbacks
             // 
@@ -62,8 +66,9 @@
          * ===============
          */
             _init: function() {
-                var instance = this;
-                var element = instance.element;
+                var 
+                    instance = this,
+                    element = instance.element;
 
                 // Set default data
                 instance._data = {
@@ -140,8 +145,9 @@
              * @param  {Object} event [The original event object]
              */
             _rAFScroll: function( event ){
-                var instance = this;
-                var $cont = jQuery( instance.settings.container );
+                var 
+                    instance = this,
+                    $cont = jQuery( instance.settings.container );
 
                 if ( !frame ){
                     frame = true;
@@ -157,8 +163,9 @@
              * @param  {Object} event [The original event object]
              */
             _rAFResize: function( event ){
-                var instance = this;
-                var $cont = jQuery( instance.settings.container );
+                var 
+                    instance = this,
+                    $cont = jQuery( instance.settings.container );
 
                 if ( !frame ){
                     frame = true;
@@ -175,28 +182,30 @@
              * Since the window element (which would be most commonly used) doesn't have one, we can make one just like it.
              */
             _setContainerData: function(){
-                var instance = this;
-                var cont = $(instance.settings.container)[0];
+                var 
+                    instance = this,
+                    cont = $(instance.settings.container)[0],
                 // Our made up window boundingClientRect
-                var windowContRect = {
-                    left: 0,
-                    top: 0,
-                    right: $(window).width(),
-                    bottom: $(window).height(),
-                    width: $(window).width(),
-                    height: $(window).height()
-                };
+                    windowContRect = {
+                        left: 0,
+                        top: 0,
+                        right: $(window).width(),
+                        bottom: $(window).height(),
+                        width: $(window).width(),
+                        height: $(window).height()
+                    },
                 // Choose the one to use
-                var contRect = ( instance.settings.container === window ) ? windowContRect : cont.getBoundingClientRect();
+                    contRect = ( instance.settings.container === window ) ? windowContRect : cont.getBoundingClientRect(),
                 // Make up the end object of data
-                var cont_data = {
-                    left: contRect.left,
-                    top: contRect.top,
-                    right: contRect.right,
-                    bottom: contRect.bottom,
-                    width: contRect.width,
-                    height: contRect.height
-                };
+                    cont_data = {
+                        left: contRect.left,
+                        top: contRect.top,
+                        right: contRect.right,
+                        bottom: contRect.bottom,
+                        width: contRect.width,
+                        height: contRect.height
+                    };
+
                 // Set the data
                 instance._data.container.rect = cont_data;
             },
@@ -207,14 +216,16 @@
              * @param {Number|Object} args [A number or object with offsets for sides]
              */
             _setElementOffset: function( args ){
-                var instance = this;
-                var offset_setting = args || instance.settings.offset;
-                var offset = {
-                    left: 0,
-                    top: 0,
-                    right: 0, 
-                    bottom: 0,
-                };
+                var 
+                    instance = this,
+                    offset_setting = args || instance.settings.offset,
+                    offset = {
+                        left: 0,
+                        top: 0,
+                        right: 0, 
+                        bottom: 0,
+                    };
+
                 // If the offset is just a number
                 if ( !isNaN(offset_setting) ){
                     offset.left = offset.top = -offset_setting;
@@ -237,21 +248,23 @@
              * Save the data for use later.
              */
             _setElementData: function(){
-                var instance = this;
-                var element = instance.element;
+                var 
+                    instance = this,
+                    element = instance.element,
                 // Get the element coordinates
-                var elementRect = element.getBoundingClientRect();
+                    elementRect = element.getBoundingClientRect(),
                 // Get the offset settings
-                var offset = instance._data.element.offset;
+                    offset = instance._data.element.offset,
                 // Make the data object
-                var elem_data = {
-                    left: elementRect.left + offset.left,
-                    top: elementRect.top + offset.top,
-                    right: elementRect.right + offset.right,
-                    bottom: elementRect.bottom + offset.bottom,
-                    width: elementRect.width + ( -offset.left + offset.bottom ),
-                    height: elementRect.height + ( -offset.top + offset.bottom )
-                };
+                    elem_data = {
+                        left: elementRect.left + offset.left,
+                        top: elementRect.top + offset.top,
+                        right: elementRect.right + offset.right,
+                        bottom: elementRect.bottom + offset.bottom,
+                        width: elementRect.width + ( -offset.left + offset.bottom ),
+                        height: elementRect.height + ( -offset.top + offset.bottom )
+                    };
+
                 // Save the data
                 instance._data.element.rect = elem_data;
             },
@@ -263,17 +276,19 @@
              * A position is "true" if it is visible on screen. Each is the edge of the element.
              */
             _setElementPosition: function(){
-                var instance = this;
-                var cont_data = instance._data.container.rect;
-                var elem_data = instance._data.element.rect;
+                var 
+                    instance = this,
+                    cont_data = instance._data.container.rect,
+                    elem_data = instance._data.element.rect,
                 // Get the positions based on our cacludations
                 // Most of these caclulations "zero" the measurement by comparing the same position to the container.
-                var position = {
-                    top: ( cont_data.top - elem_data.top <= 0 && Math.abs( cont_data.top - elem_data.top ) < cont_data.height ),
-                    bottom: ( cont_data.bottom - elem_data.bottom > 0 && Math.abs( cont_data.bottom - elem_data.bottom ) < cont_data.height ),
-                    left: ( cont_data.left - elem_data.left <= 0 && Math.abs( cont_data.left - elem_data.left ) < cont_data.width ),
-                    right: ( cont_data.right - elem_data.right > 0 && Math.abs( cont_data.right - elem_data.right ) < cont_data.width ),
-                };
+                    position = {
+                        top: ( cont_data.top - elem_data.top <= 0 && Math.abs( cont_data.top - elem_data.top ) < cont_data.height ),
+                        bottom: ( cont_data.bottom - elem_data.bottom > 0 && Math.abs( cont_data.bottom - elem_data.bottom ) < cont_data.height ),
+                        left: ( cont_data.left - elem_data.left <= 0 && Math.abs( cont_data.left - elem_data.left ) < cont_data.width ),
+                        right: ( cont_data.right - elem_data.right > 0 && Math.abs( cont_data.right - elem_data.right ) < cont_data.width ),
+                    };
+
                 // Set the "all" parameter. 
                 // Means every part of the element is in the container.
                 // If any part of the element is outside of the container, it will return false.
@@ -288,33 +303,42 @@
              * This will set the visibility to true if *any part* of the element is visible on screen.
              */
             _setElementVisibility: function(){
-                var instance = this;
-                var container_rect = instance._data.container.rect;
-                var element_rect = instance._data.element.rect;
+                var 
+                    instance = this,
+                    container_rect = instance._data.container.rect,
+                    element_rect = instance._data.element.rect,
                 // Element position
                 // Needs to be updated before calling this function
-                var position = instance._data.element.position;
+                    position = instance._data.element.position,
                 // If statement for visibility
                 // The statement checks both axis seperately to see if it is "visible" on the axis.
                 // If it is visible on both axis, then it is in the viewport.
                 // We need to do this since it could be visible on 1 axis and not another.
-                var visible = false;
-                // Partly on screen
-                if ( ( position.top || position.bottom ) && ( position.right || position.left ) ){
-                    visible = true;
+                    visible = false;
+
+
+                if ( instance.settings.partiallyVisible ){
+                    // Partly on screen
+                    if ( ( position.top || position.bottom ) && ( position.right || position.left ) ){
+                        visible = true;
+                    }
+                    // Cut off X axis
+                    else if ( ( position.top || position.bottom ) && (element_rect.left < 0 && element_rect.right >= container_rect.width) ){
+                        visible = true;
+                    }
+                    // Cut off Y axis
+                    else if ( (element_rect.top < 0 && element_rect.bottom >= container_rect.height) && ( position.right || position.left ) ){
+                        visible = true;
+                    }
+                    // Cut off on both axis
+                    else if ( !position.all && (element_rect.left < 0 && element_rect.right >= container_rect.width) && (element_rect.top < 0 && element_rect.bottom >= container_rect.height) ) {
+                        visible = true;
+                    }                    
                 }
-                // Cut off X axis
-                else if ( ( position.top || position.bottom ) && (element_rect.left < 0 && element_rect.right > container_rect.width) ){
-                    visible = true;
+                else {
+                    visible = position.all;
                 }
-                // Cut off Y axis
-                else if ( (element_rect.top < 0 && element_rect.bottom > container_rect.height) && ( position.right || position.left ) ){
-                    visible = true;
-                }
-                // Cut off on both axis
-                else if ( !position.all && (element_rect.left < 0 && element_rect.right > container_rect.width) && (element_rect.top < 0 && element_rect.bottom > container_rect.height) ) {
-                    visible = true;
-                }
+
                 // Set the visible boolean
                 instance._data.element.visible = visible;
             },
@@ -324,45 +348,51 @@
              * Set the percents and save them for later
              */
             _setElementPercent: function(){
-                var instance = this;
-                var percentY = instance._getPercentY.call( instance );
-                var percentX = instance._getPercentX.call( instance );
+                var 
+                    instance = this,
+                    percentY = instance._getPercentY.call( instance ),
+                    percentX = instance._getPercentX.call( instance );
+
                 // Set the percents
                 instance._data.element.percent.y = percentY;
                 instance._data.element.percent.x = percentX;
             },
 
             _setElementProgress: function(){
-                var instance = this;
-                var progressY = instance._getProgressY.call(this);
-                var progressX = instance._getProgressX.call(this);
+                var 
+                    instance = this,
+                    progressY = instance._getProgressY.call(this),
+                    progressX = instance._getProgressX.call(this);
+
                 // Set the percents
                 instance._data.element.progress.y = progressY;
                 instance._data.element.progress.x = progressX;
             },
 
             _getProgressY: function(){
-                var instance = this;
-                var element = instance.element;
-                var element_rect = instance._data.element.rect;
-                var element_position = instance._data.element.position;
-                var container_rect = instance._data.container.rect;
-                var ret = 0;
-                var calc = ( element_rect.bottom - container_rect.top ) / (container_rect.height + element_rect.height);
-                var percent = instance._normalizePercent( calc );
+                var
+                    instance = this,
+                    element = instance.element,
+                    element_rect = instance._data.element.rect,
+                    element_position = instance._data.element.position,
+                    container_rect = instance._data.container.rect,
+                    ret = 0,
+                    calc = ( element_rect.bottom - container_rect.top ) / (container_rect.height + element_rect.height),
+                    percent = instance._normalizePercent( calc );
 
                 return percent;
             },
 
             _getProgressX: function(){
-                var instance = this;
-                var element = instance.element;
-                var element_rect = instance._data.element.rect;
-                var element_position = instance._data.element.position;
-                var container_rect = instance._data.container.rect;
-                var ret = 0;
-                var calc = ( element_rect.right - container_rect.left ) / (container_rect.width + element_rect.width);
-                var percent = instance._normalizePercent( calc );
+                var 
+                    instance = this,
+                    element = instance.element,
+                    element_rect = instance._data.element.rect,
+                    element_position = instance._data.element.position,
+                    container_rect = instance._data.container.rect,
+                    ret = 0,
+                    calc = ( element_rect.right - container_rect.left ) / (container_rect.width + element_rect.width),
+                    percent = instance._normalizePercent( calc );
 
                 return percent;
             },
@@ -373,12 +403,13 @@
              * @return {Number} [A number from 0 to 1 of the amount of the element visible]
              */
             _getPercentX: function(){
-                var instance = this;
-                var element = instance.element;
-                var element_rect = instance._data.element.rect;
-                var element_position = instance._data.element.position;
-                var container_rect = instance._data.container.rect;
-                var ret = 0;
+                var 
+                    instance = this,
+                    element = instance.element,
+                    element_rect = instance._data.element.rect,
+                    element_position = instance._data.element.position,
+                    container_rect = instance._data.container.rect,
+                    ret = 0;
 
                 // If either the left or right is visible
                 if ( element_position.left && !element_position.right || !element_position.left && element_position.right ){
@@ -396,7 +427,7 @@
                     ret = 1;
                 }
                 // Middle of element
-                else if ( !element_position.left && !element_position.right && element_rect.left < 0 && element_rect.right > container_rect.width ){
+                else if ( !element_position.left && !element_position.right && element_rect.left < 0 && element_rect.right >= container_rect.width ){
                     // We don't want an exact percent when its overflowing. Consider it 1.
                     if ( instance.settings.ignoreOverflow ){
                         ret = 1;
@@ -419,12 +450,13 @@
              * @return {Number} [A number from 0 to 1 of the amount of the element visible]
              */
             _getPercentY: function(){
-                var instance = this;
-                var element = instance.element;
-                var element_rect = instance._data.element.rect;
-                var element_position = instance._data.element.position;
-                var container_rect = instance._data.container.rect;
-                var ret = 0;
+                var 
+                    instance = this,
+                    element = instance.element,
+                    element_rect = instance._data.element.rect,
+                    element_position = instance._data.element.position,
+                    container_rect = instance._data.container.rect,
+                    ret = 0;
 
                 // If either the top or bottom is visible
                 if ( element_position.top && !element_position.bottom || !element_position.top && element_position.bottom ){
@@ -442,7 +474,7 @@
                     ret = 1;
                 }
                 // Middle of element
-                else if ( !element_position.top && !element_position.bottom && element_rect.top < 0 && element_rect.bottom > container_rect.height ){
+                else if ( !element_position.top && !element_position.bottom && element_rect.top < 0 && element_rect.bottom >= container_rect.height ){
                     // We don't want an exact percent when its overflowing. Consider it 1.
                     if ( instance.settings.ignoreOverflow ){
                         ret = 1;
@@ -487,8 +519,7 @@
                 instance._setElementPosition.call( instance );
                 instance._setElementVisibility.call( instance );
                 instance._setElementPercent.call( instance );
-
-                instance._setElementProgress.call(instance);
+                instance._setElementProgress.call( instance );
             },
             /**
              * bindEvents
@@ -497,9 +528,10 @@
              * Remap that to our own namespaced events in the plugin.
              */
             _bindEvents: function(){
-                var instance = this;
-                var container = instance.settings.container;
-                var $cont = jQuery(container);
+                var 
+                    instance = this,
+                    container = instance.settings.container,
+                    $cont = jQuery(container);
 
                 // Hook into native events
                 // Use requestAnimationFrame to throttle them
@@ -520,14 +552,16 @@
              * @param  {String} type [The type of event that is being called.]
              */
             _event: function( type ){
-                var instance = this;
-                var event_element = instance.element;
-                var event_object = {
-                    position: {},
-                    visible: false
-                };
-                var isVisible = false;
-                var previously_visible = instance._data.element.visible; // Old visibility
+                var 
+                    instance = this,
+                    event_element = instance.element,
+                    event_object = {
+                        position: {},
+                        visible: false
+                    },
+                    isVisible = false,
+                    previously_visible = instance._data.element.visible; // Old visibility
+
                 // Updated all percentages, positions, visibility data
                 instance._updateElementVisibility.call( instance );
                 // Write the new data to our event object, for use in callbacks
@@ -597,8 +631,9 @@
              * @return {Boolean}
              */
             visible: function(){
-                var instance = this;
-                var elem_data = instance._data.element;
+                var 
+                    instance = this,
+                    elem_data = instance._data.element;
 
                 return elem_data.visible;
             },
@@ -610,8 +645,9 @@
              * @return {Number|Object}      [A number or object with percentage for one or both axis.]
              */
             percent: function( axis ){
-                var instance = this;
-                var elem_data = instance._data.element;
+                var 
+                    instance = this,
+                    elem_data = instance._data.element;
 
                 switch( axis ){
                     case 'x':
@@ -634,8 +670,9 @@
              * @return {Object}      [The object of current offset settings for the element.]
              */
             offset: function( args ){
-                var instance = this;
-                var offset = instance._data.element.offset; // The current offset data
+                var 
+                    instance = this,
+                    offset = instance._data.element.offset; // The current offset data
                 // Args aren't defined or invalid
                 if ( args === undefined || Object.getPrototypeOf({}) !== Object.getPrototypeOf(args) ){
                     return offset; // Return current offset data
