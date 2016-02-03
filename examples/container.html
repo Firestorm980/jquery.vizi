@@ -100,32 +100,10 @@
 		<script src="../src/jquery.vizi.js"></script>
 		<script>
 			jQuery(document).ready(function($) {
-				// Remaps a range of values to another
-				// Numbers outside of the range are not clamped to the minimum and maximum parameters values, because out-of-range values are often intentional and useful. 
-				// However, if you want to clamp it, you can pass true to that parameter.
-				// https://github.com/trembl/p5.Math.js/
-				var map = function (value, istart, istop, ostart, ostop, clamp) {
-					var result = ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
-					if ( clamp === undefined || !clamp ){
-						return result;
-					}
-					else {
-						if ( result < ostart ){ return ostart; }
-						else if ( result > ostop ){ return ostop; }
-						else { return result; }
-					}
-				};
-				var output = { min: 0, max: 1 };
-				var input = { min: 0, max: 0 };
 
 				$('#container').vizi({
 					onVisible: function( data ){
-						var scroll;
-
-						input.min = 1 - data.percent.y;
-						input.max = data.percent.y;
-
-						scroll = map(data.progress.y, input.min, input.max, output.min, output.max, true);
+						var scroll = $(window).scrollTop() / ($(document).height() - $(window).height());
 
 						jQuery('#percent').text( data.percent.y.toFixed(2) );
 						jQuery('#progress').text( data.progress.y.toFixed(2) );
