@@ -140,40 +140,29 @@
                 })();
             },
             /**
-             * requestAnimationFrame scrolling event.
-             * This will help keep performance high and let's us use a special event just for the plugin.
-             * @param  {Object} event [The original event object]
+             * MDN throttle custom event.
+             * @author https://developer.mozilla.org/en-US/docs/Web/Events/resize
+             * 
+             * @param  {String} type [Event to throttle]
+             * @param  {String} name [Name of new throttled event]
+             * @param  {Object} obj  [Object to listen on. Default to window.]
              */
-            _rAFScroll: function( event ){
-                var 
-                    instance = this,
-                    $cont = jQuery( instance.settings.container );
+            _throttle: function (type, name, obj) {
+                obj = obj || window;
+                var running = false;
+                var func = function() {
 
-                if ( !frame ){
-                    frame = true;
+                    if (running) { return; }
 
-                    requestAnimFrame( function(){ 
-                        $cont.trigger('scroll.'+pluginName);
+                    running = true;
+
+                    requestAnimFrame(function() {
+                        obj.dispatchEvent(new CustomEvent(name));
+                        running = false;
                     });
-                }
-            },
-            /**
-             * requestAnimationFrame resizing event.
-             * This will help keep performance high and let's us use a special event just for the plugin.
-             * @param  {Object} event [The original event object]
-             */
-            _rAFResize: function( event ){
-                var 
-                    instance = this,
-                    $cont = jQuery( instance.settings.container );
+                };
 
-                if ( !frame ){
-                    frame = true;
-
-                    requestAnimFrame( function(){ 
-                        $cont.trigger('resize.'+pluginName);
-                    });
-                }
+                obj.addEventListener(type, func);
             },
             /*
              * setContainerData
@@ -535,8 +524,10 @@
 
                 // Hook into native events
                 // Use requestAnimationFrame to throttle them
-                $cont.on('scroll', function(event){ instance._rAFScroll.call(instance, event); });
-                $cont.on('orientationchange resize', function(event){ instance._rAFResize.call(instance, event); });
+                instance._throttle( 'resize', 'resize.'+pluginName, $cont[0] );
+                instance._throttle( 'scroll', 'scroll.'+pluginName, $cont[0] );
+
+                $cont.on('orientationchange', function(event){ $cont.trigger('resize.'+pluginName); });
 
                 // Map to our plugin namespace
                 $cont.on('scroll.'+pluginName, function viziScroll(event){ event.stopPropagation(); instance._event.call( instance, 'scroll'); });
